@@ -2,7 +2,7 @@ module rkf45_mod
   implicit none
 
   contains
-    subroutine rkf45 (y0, t0, tf, dt0, eps, t, dt, y)
+    pure elemental subroutine rkf45 (y0, t0, tf, dt0, eps, t, dt, y)
 
         use rhs
         implicit none
