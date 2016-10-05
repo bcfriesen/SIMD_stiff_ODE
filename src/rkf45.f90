@@ -89,8 +89,6 @@ module rkf45_mod
 
         end do
 
-    print *, '# of integration steps: ', num_steps
-
     end subroutine rkf45
 
 end module rkf45_mod
