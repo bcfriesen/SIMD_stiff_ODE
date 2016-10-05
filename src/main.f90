@@ -7,6 +7,7 @@ program main
 
     real(kind=dp) :: y0, t0, tf, dt0, eps
     real(kind=dp) :: t, dt, y
+    integer :: flag
 
     print *, 'Integrating the equation y''(t) = 2*t from [0, 1]'
 
@@ -21,11 +22,16 @@ program main
     print *, 't0 = ', t0
     print *, 'dt0 = ', dt0
 
-    call rkf45(y0, t0, tf, dt0, eps, t, dt, y)
+    call rkf45(y0, t0, tf, dt0, eps, t, dt, y, flag)
 
-    print *, 'Final values:'
-    print *, 't = ', t
-    print *, 'y = ', y
-    print *, 'dt = ', dt
+    if (flag == 0) then
+      print *, 'Success!'
+      print *, 'Final values:'
+      print *, 't = ', t
+      print *, 'y = ', y
+      print *, 'dt = ', dt
+    else
+      print *, 'ERROR: Integration failed!'
+    end if
 
 end program main

@@ -2,7 +2,7 @@ module rkf45_mod
   implicit none
 
   contains
-    pure elemental subroutine rkf45 (y0, t0, tf, dt0, eps, t, dt, y)
+    pure elemental subroutine rkf45 (y0, t0, tf, dt0, eps, t, dt, y, flag)
 
         use rhs
         implicit none
@@ -11,6 +11,7 @@ module rkf45_mod
 
         real(kind=dp), intent(in) :: y0, t0, tf, dt0, eps
         real(kind=dp), intent(out) :: t, dt, y
+        integer, intent(out) :: flag
 
         real(kind=dp) :: k1, k2, k3, k4, k5, k6
         real(kind=dp) :: y_rk4_approx
@@ -71,7 +72,10 @@ module rkf45_mod
 
             ! If the local truncation error satisfies the tolerance
             ! requirements, then we're done!
-            if (lte < eps) exit
+            if (lte < eps) then
+                flag = 0
+                exit
+            end if
 
             ! Adjust step size
             dt = dt*s
@@ -83,6 +87,8 @@ module rkf45_mod
             end if
 
           end do
+
+          if (lte > eps) flag = -1
 
           t = t + dt
           y = y_rk5_approx
