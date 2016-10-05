@@ -20,7 +20,9 @@ module rkf45_mod
 
         integer, parameter :: maxiter = 10
         integer :: i
-        integer :: num_steps = 0
+        integer :: num_steps
+
+        num_steps = 0
 
         t = t0
         y = y0
