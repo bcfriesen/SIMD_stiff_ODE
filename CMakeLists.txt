@@ -4,5 +4,6 @@ project (SIMD_stiff_ODE)
 enable_language(Fortran)
 
 set (CMAKE_Fortran_FLAGS "-qopt-report=5 -qopt-report-phase=vec -qopenmp")
+set (CMAKE_VERBOSE_MAKEFILE "TRUE")
 
 add_subdirectory (src)
