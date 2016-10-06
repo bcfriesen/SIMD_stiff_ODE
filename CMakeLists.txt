@@ -3,4 +3,6 @@ project (SIMD_stiff_ODE)
 
 enable_language(Fortran)
 
+set (CMAKE_Fortran_FLAGS "-qopt-report=5 -qopt-report-phase=vec -qopenmp")
+
 add_subdirectory (src)
