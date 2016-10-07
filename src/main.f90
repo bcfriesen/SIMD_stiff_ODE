@@ -11,9 +11,12 @@ program main
     integer :: flag
 
     y0 = 0.0d0
+    ! Every ODE must use the same limits of integration.
     t0 = 0.0d0
     tf = 5.0d0
+    ! Use the same initial guess for the time step.
     dt0 = 25.0d0
+    ! Local truncation error tolerance.
     eps = 1.0d-3
 
     write (*, *), 'Integrating the equation y''(t) = 2*t from:'
