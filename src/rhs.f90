@@ -1,4 +1,4 @@
-module rhs
+module rhs_mod
 
   implicit none
 
@@ -14,4 +14,4 @@ module rhs
       f = 2.0d0*t
   end function f
 
-end module rhs
+end module rhs_mod

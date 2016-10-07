@@ -4,7 +4,7 @@ module rkf45_mod
   contains
     pure elemental subroutine rkf45 (y0, t0, tf, dt0, eps, t, dt, y, flag)
 
-        use rhs
+        use rhs_mod
         implicit none
 
         integer, parameter :: dp = selected_real_kind(15)
