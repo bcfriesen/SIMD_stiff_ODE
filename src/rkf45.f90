@@ -2,7 +2,7 @@ module rkf45_mod
   implicit none
 
   contains
-    subroutine rkf45 (y0, t0, tf, dt0, eps, t, dt, y, flag)
+    subroutine rkf45 (y0, t0, tf, dt0, eps, t, dt, y, flag, num_steps)
 
         use rhs_mod
         implicit none
@@ -11,7 +11,7 @@ module rkf45_mod
 
         real(kind=dp), intent(in) :: y0(:), t0, tf, dt0, eps
         real(kind=dp), intent(out) :: t, dt, y(:)
-        integer, intent(out) :: flag
+        integer, intent(out) :: flag, num_steps
 
         real(kind=dp) :: k1(size(y0))
         real(kind=dp) :: k2(size(y0))
@@ -29,7 +29,6 @@ module rkf45_mod
 
         integer, parameter :: maxiter = 10
         integer :: i
-        integer :: num_steps
 
         num_steps = 0
 

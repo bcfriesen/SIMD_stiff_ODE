@@ -9,6 +9,7 @@ program main
     integer, parameter :: array_length = 8
     real(kind=dp) :: y0(array_length), t0, tf, dt0, eps
     real(kind=dp) :: t, dt, y(array_length)
+    integer :: num_steps
     integer :: flag
     integer :: i
 
@@ -34,11 +35,12 @@ program main
     write (*, '(a8, es12.3e2)') 'dt0 = ', dt0
 
     do i = 1, array_length, dp_simd_width
-      call rkf45(y0(i:i+dp_simd_width), t0, tf, dt0, eps, t, dt, y(i:i+dp_simd_width), flag)
+      call rkf45(y0(i:i+dp_simd_width), t0, tf, dt0, eps, t, dt, y(i:i+dp_simd_width), flag, num_steps)
     end do
 
     if (flag == 0) then
       write (*, *) 'Success!'
+      write (*, '(a25, i8)') '# of time steps taken: ', num_steps
       write (*, *) 'Final values:'
       write (*, '(a8, 8es12.3e2)') 'y = ', y
       write (*, '(a8, es12.3e2)')  't = ', t
