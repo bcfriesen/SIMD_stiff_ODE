@@ -9,13 +9,13 @@ program main
     real(kind=dp) :: t, dt, y
     integer :: flag
 
-    print *, 'Integrating the equation y''(t) = 2*t from [0, 1]'
-
     y0 = 0.0d0
     t0 = 0.0d0
     tf = 5.0d0
     dt0 = 25.0d0
     eps = 1.0d-3
+
+    print *, 'Integrating the equation y''(t) = 2*t from [', t0, ', ', tf, ']'
 
     print *, 'Initial values:'
     print *, 'y0 = ', y0
