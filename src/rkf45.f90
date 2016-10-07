@@ -43,7 +43,7 @@ module rkf45_mod
           ! Keep adjusting step size until we run out of iterations.
           do i = 1, maxiter
 
-            ! A bunch of coefficients.
+            ! A bunch of coefficients, taken from Hairer, Norsett, and Wanner (1993).
 
             call rhs(t, y, f)
             k1 = dt * f
