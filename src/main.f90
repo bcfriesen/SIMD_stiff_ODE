@@ -16,21 +16,23 @@ program main
     dt0 = 25.0d0
     eps = 1.0d-3
 
-    print *, 'Integrating the equation y''(t) = 2*t from [', t0, ', ', tf, ']'
+    write (*, *), 'Integrating the equation y''(t) = 2*t from:'
+    write (*, '(a3, es12.3e2, a3, es12.3e2, a3)') '[', t0, ', ', tf, ']'
+    write (*, '(a15, es12.3e2)') 'LTE: ', eps
 
-    print *, 'Initial values:'
-    print *, 'y0 = ', y0
-    print *, 't0 = ', t0
-    print *, 'dt0 = ', dt0
+    write (*, *) 'Initial values:'
+    write (*, '(a8, 4es12.3e2)') 'y0 = ', y0
+    write (*, '(a8, es12.3e2)') 't0 = ', t0
+    write (*, '(a8, es12.3e2)') 'dt0 = ', dt0
 
     call rkf45(y0(:), t0, tf, dt0, eps, t, dt, y(:), flag)
 
     if (flag == 0) then
-      print *, 'Success!'
-      print *, 'Final values:'
-      print *, 't = ', t
-      print *, 'y = ', y
-      print *, 'dt = ', dt
+      write (*, *) 'Success!'
+      write (*, *) 'Final values:'
+      write (*, '(a8, 4es12.3e2)') 'y = ', y
+      write (*, '(a8, es12.3e2)')  't = ', t
+      write (*, '(a8, es12.3e2)')  'dt = ', dt
     else
       print *, 'ERROR: Integration failed!'
     end if
