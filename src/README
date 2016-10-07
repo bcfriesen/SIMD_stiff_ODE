@@ -1,0 +1,7 @@
+This is a SIMD adaptive integrator for ODEs, using the Runge-Kutta-Fehlberg
+(RKF45) method. It solves independent, single ODEs simultaneously; it does NOT
+solve systems of coupled ODEs. Its design was inspired by a problem faced in
+the Nyx cosmology code, where one must integrate a single radiation
+heating/cooling ODE at each grid point. The ODE at each grid point has the same
+functional form and the same limits of integration, but has different initial
+conditions.
