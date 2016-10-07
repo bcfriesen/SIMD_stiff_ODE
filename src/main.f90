@@ -5,12 +5,17 @@ program main
 
     integer, parameter :: dp = kind(1.0d0)
 
-    integer, parameter :: simd_width = 4 ! For Edison
-    real(kind=dp) :: y0(simd_width), t0, tf, dt0, eps
-    real(kind=dp) :: t, dt, y(simd_width)
+    integer, parameter :: dp_simd_width = 4 ! AVX2 (Ivy Bridge) has 256 bit-wide SIMD width = 4 doubles
+    integer, parameter :: array_length = 8
+    real(kind=dp) :: y0(array_length), t0, tf, dt0, eps
+    real(kind=dp) :: t, dt, y(array_length)
     integer :: flag
+    integer :: i
 
-    y0 = 0.0d0
+    ! Set different initial conditions.
+    do i = 1, array_length
+      y0(i) = real(i, dp)
+    end do
     ! Every ODE must use the same limits of integration.
     t0 = 0.0d0
     tf = 5.0d0
@@ -24,16 +29,18 @@ program main
     write (*, '(a15, es12.3e2)') 'LTE: ', eps
 
     write (*, *) 'Initial values:'
-    write (*, '(a8, 4es12.3e2)') 'y0 = ', y0
+    write (*, '(a8, 8es12.3e2)') 'y0 = ', y0
     write (*, '(a8, es12.3e2)') 't0 = ', t0
     write (*, '(a8, es12.3e2)') 'dt0 = ', dt0
 
-    call rkf45(y0(:), t0, tf, dt0, eps, t, dt, y(:), flag)
+    do i = 1, array_length, dp_simd_width
+      call rkf45(y0(i:i+dp_simd_width), t0, tf, dt0, eps, t, dt, y(i:i+dp_simd_width), flag)
+    end do
 
     if (flag == 0) then
       write (*, *) 'Success!'
       write (*, *) 'Final values:'
-      write (*, '(a8, 4es12.3e2)') 'y = ', y
+      write (*, '(a8, 8es12.3e2)') 'y = ', y
       write (*, '(a8, es12.3e2)')  't = ', t
       write (*, '(a8, es12.3e2)')  'dt = ', dt
     else
