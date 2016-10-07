@@ -6,12 +6,13 @@ module rhs_mod
 
   contains
 
-  pure elemental real(kind=dp) function f (t, y)
+  subroutine rhs (t, y, f)
       implicit none
 
-      real(kind=dp), intent(in) :: t, y
+      real(kind=dp), intent(in) :: t, y(:)
+      real(kind=dp), intent(out) :: f(:)
 
       f = 2.0d0*t
-  end function f
+  end subroutine rhs
 
 end module rhs_mod

@@ -5,8 +5,9 @@ program main
 
     integer, parameter :: dp = kind(1.0d0)
 
-    real(kind=dp) :: y0, t0, tf, dt0, eps
-    real(kind=dp) :: t, dt, y
+    integer, parameter :: simd_width = 4 ! For Edison
+    real(kind=dp) :: y0(simd_width), t0, tf, dt0, eps
+    real(kind=dp) :: t, dt, y(simd_width)
     integer :: flag
 
     y0 = 0.0d0
@@ -22,7 +23,7 @@ program main
     print *, 't0 = ', t0
     print *, 'dt0 = ', dt0
 
-    call rkf45(y0, t0, tf, dt0, eps, t, dt, y, flag)
+    call rkf45(y0(:), t0, tf, dt0, eps, t, dt, y(:), flag)
 
     if (flag == 0) then
       print *, 'Success!'
