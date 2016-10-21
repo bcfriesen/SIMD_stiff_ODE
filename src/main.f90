@@ -15,15 +15,21 @@ program main
     integer :: flag
     integer :: i
 
-    ! Set different initial conditions.
+    ! Set initial conditions. Just use the value of the loop index as the
+    ! initial condition.
     do i = 1, array_length
       y0(i) = real(i, kind=dp)
     end do
-    ! Every ODE must use the same limits of integration.
+
+    ! Every ODE must use the same limits of integration. This is the case for the
+    ! Nyx problem, where the Strang splitting time step is the same in every
+    ! cell during each grid sweep.
     t0 = 0.0d0
     tf = 5.0d0
-    ! Use the same initial guess for the time step.
+
+    ! Use the same initial guess for the time step for every ODE.
     dt0 = 25.0d0
+
     ! Local truncation error tolerance.
     eps = 1.0d-3
 
@@ -31,20 +37,22 @@ program main
     write (*, '(a3, es12.3e2, a3, es12.3e2, a3)') '[', t0, ', ', tf, ']'
     write (*, '(a45, es18.6e2)') 'local truncation error tolerance: ', eps
 
-    ! First do the integrations in scalar.
+    ! First do the integrations using the scalar version of RKF45.
     call cpu_time(t1)
     do i = 1, array_length
       call rkf45_scalar(y0(i), t0, tf, dt0, eps, t, dt, y(i), flag, num_steps)
     end do
     call cpu_time(t2)
     write (*, *) 'time in scalar RKF45 (sec): ', t2-t1
+    ! Write out the results to disk so we can make sure the scalar and SIMD
+    ! versions give the same answer.
     open(unit=11, name='scalar_results.dat')
     do i = 1, array_length
       write (11, '(i8, 3es18.6e2)') i, y(i), t, dt
     end do
     close(11)
 
-    ! Now do the same integrations in SIMD.
+    ! Now do the same sweep of integrations using the SIMD RKF45.
     call cpu_time(t1)
     do i = 1, array_length, dp_simd_width
       call rkf45(y0(i:i+dp_simd_width-1), t0, tf, dt0, eps, t, dt, y(i:i+dp_simd_width), flag, num_steps)
