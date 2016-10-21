@@ -1,6 +1,7 @@
 program main
 
     use rkf45_mod
+    use rkf45_scalar_mod
     implicit none
 
     integer, parameter :: dp = kind(1.0d0)
@@ -30,7 +31,20 @@ program main
     write (*, '(a3, es12.3e2, a3, es12.3e2, a3)') '[', t0, ', ', tf, ']'
     write (*, '(a15, es18.6e2)') 'LTE: ', eps
 
+    ! First do the integrations in scalar.
+    call cpu_time(t1)
+    do i = 1, array_length
+      call rkf45_scalar(y0(i), t0, tf, dt0, eps, t, dt, y(i), flag, num_steps)
+    end do
+    call cpu_time(t2)
+    write (*, *) 'time in scalar RKF45 (sec): ', t2-t1
+    open(unit=11, name='scalar_results.dat')
+    do i = 1, array_length
+      write (11, '(i8, 3es18.6e2)') i, y(i), t, dt
+    end do
+    close(11)
 
+    ! Now do the same integrations in SIMD.
     call cpu_time(t1)
     do i = 1, array_length, dp_simd_width
       call rkf45(y0(i:i+dp_simd_width-1), t0, tf, dt0, eps, t, dt, y(i:i+dp_simd_width), flag, num_steps)
