@@ -29,10 +29,6 @@ program main
     write (*, '(a3, es12.3e2, a3, es12.3e2, a3)') '[', t0, ', ', tf, ']'
     write (*, '(a15, es18.6e2)') 'LTE: ', eps
 
-    write (*, *) 'Initial values:'
-    write (*, '(a8, 8es12.3e2)') 'y0 = ', y0
-    write (*, '(a8, es12.3e2)') 't0 = ', t0
-    write (*, '(a8, es12.3e2)') 'dt0 = ', dt0
 
     do i = 1, array_length, dp_simd_width
       call rkf45(y0(i:i+dp_simd_width-1), t0, tf, dt0, eps, t, dt, y(i:i+dp_simd_width), flag, num_steps)
