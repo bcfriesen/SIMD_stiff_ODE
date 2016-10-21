@@ -6,7 +6,7 @@ program main
     integer, parameter :: dp = kind(1.0d0)
 
     integer, parameter :: dp_simd_width = 4 ! AVX2 (Ivy Bridge) has 256 bit-wide SIMD width = 4 doubles
-    integer, parameter :: array_length = 8
+    integer, parameter :: array_length = 131072
     real(kind=dp) :: y0(array_length), t0, tf, dt0, eps
     real(kind=dp) :: t, dt, y(array_length)
     real(kind=dp) :: t1, t2
