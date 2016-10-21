@@ -41,10 +41,11 @@ program main
     if (flag == 0) then
       write (*, *) 'Success!'
       write (*, '(a25, i8)') '# of time steps taken: ', num_steps
-      write (*, *) 'Final values:'
-      write (*, '(a8, 8es12.3e2)') 'y = ', y
-      write (*, '(a8, es12.3e2)')  't = ', t
-      write (*, '(a8, es12.3e2)')  'dt = ', dt
+      open(unit=11, name='simd_results.dat')
+      do i = 1, array_length
+        write (11, '(i8, 3es18.6e2)') i, y(i), t, dt
+      end do
+      close(11)
     else
       write (*, *) 'ERROR: Integration failed!'
     end if
