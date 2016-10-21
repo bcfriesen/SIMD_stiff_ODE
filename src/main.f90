@@ -17,7 +17,7 @@ program main
 
     ! Set different initial conditions.
     do i = 1, array_length
-      y0(i) = real(i, dp)
+      y0(i) = real(i, kind=dp)
     end do
     ! Every ODE must use the same limits of integration.
     t0 = 0.0d0
