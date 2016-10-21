@@ -9,6 +9,7 @@ program main
     integer, parameter :: array_length = 8
     real(kind=dp) :: y0(array_length), t0, tf, dt0, eps
     real(kind=dp) :: t, dt, y(array_length)
+    real(kind=dp) :: t1, t2
     integer :: num_steps
     integer :: flag
     integer :: i
@@ -30,9 +31,12 @@ program main
     write (*, '(a15, es18.6e2)') 'LTE: ', eps
 
 
+    call cpu_time(t1)
     do i = 1, array_length, dp_simd_width
       call rkf45(y0(i:i+dp_simd_width-1), t0, tf, dt0, eps, t, dt, y(i:i+dp_simd_width), flag, num_steps)
     end do
+    call cpu_time(t2)
+    write (*, *) 'time in SIMD RKF45 (sec): ', t2-t1
 
     if (flag == 0) then
       write (*, *) 'Success!'
