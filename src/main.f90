@@ -29,7 +29,7 @@ program main
 
     write (*, *), 'Integrating the equation y''(t) = 2*t from:'
     write (*, '(a3, es12.3e2, a3, es12.3e2, a3)') '[', t0, ', ', tf, ']'
-    write (*, '(a15, es18.6e2)') 'LTE: ', eps
+    write (*, '(a45, es18.6e2)') 'local truncation error tolerance: ', eps
 
     ! First do the integrations in scalar.
     call cpu_time(t1)
