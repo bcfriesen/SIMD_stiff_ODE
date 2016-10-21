@@ -27,7 +27,7 @@ program main
 
     write (*, *), 'Integrating the equation y''(t) = 2*t from:'
     write (*, '(a3, es12.3e2, a3, es12.3e2, a3)') '[', t0, ', ', tf, ']'
-    write (*, '(a15, es12.3e2)') 'LTE: ', eps
+    write (*, '(a15, es18.6e2)') 'LTE: ', eps
 
     write (*, *) 'Initial values:'
     write (*, '(a8, 8es12.3e2)') 'y0 = ', y0
