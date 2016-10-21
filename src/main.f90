@@ -46,7 +46,7 @@ program main
       write (*, '(a8, es12.3e2)')  't = ', t
       write (*, '(a8, es12.3e2)')  'dt = ', dt
     else
-      print *, 'ERROR: Integration failed!'
+      write (*, *) 'ERROR: Integration failed!'
     end if
 
 end program main
