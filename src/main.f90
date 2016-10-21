@@ -55,7 +55,7 @@ program main
     ! Now do the same sweep of integrations using the SIMD RKF45.
     call cpu_time(t1)
     do i = 1, array_length, dp_simd_width
-      call rkf45(y0(i:i+dp_simd_width-1), t0, tf, dt0, eps, t, dt, y(i:i+dp_simd_width), flag, num_steps)
+      call rkf45(y0(i:i+dp_simd_width-1), t0, tf, dt0, eps, t, dt, y(i:i+dp_simd_width-1), flag, num_steps)
     end do
     call cpu_time(t2)
     write (*, *) 'time in SIMD RKF45 (sec): ', t2-t1
