@@ -44,13 +44,6 @@ program main
     end do
     call cpu_time(t2)
     write (*, *) 'time in scalar RKF45 (sec): ', t2-t1
-    ! Write out the results to disk so we can make sure the scalar and SIMD
-    ! versions give the same answer.
-    open(unit=11, name='scalar_results.dat')
-    do i = 1, array_length
-      write (11, '(i8, 3es18.6e2)') i, y(i), t, dt
-    end do
-    close(11)
 
     ! Now do the same sweep of integrations using the SIMD RKF45.
     call cpu_time(t1)
@@ -63,11 +56,6 @@ program main
     if (flag == 0) then
       write (*, *) 'Success!'
       write (*, '(a25, i8)') '# of time steps taken: ', num_steps
-      open(unit=11, name='simd_results.dat')
-      do i = 1, array_length
-        write (11, '(i8, 3es18.6e2)') i, y(i), t, dt
-      end do
-      close(11)
     else
       write (*, *) 'ERROR: Integration failed!'
     end if
