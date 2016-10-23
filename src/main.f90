@@ -15,6 +15,9 @@ program main
     integer :: flag
     integer :: i
 
+    write (*,'(a20, i8)') 'Array length: ', array_length
+    write (*,'(a40, i8)') 'Array width per call to RKF45: ', dp_simd_width
+
     ! Set initial conditions. Just use the value of the loop index as the
     ! initial condition.
     do i = 1, array_length
