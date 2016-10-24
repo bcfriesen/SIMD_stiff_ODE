@@ -16,7 +16,7 @@ program main
     ! array widths. Larger array widths may also incur memory access
     ! penalties due to spilling out of cache. So the sweet spot may be
     ! somewhere in the middle.
-    integer, parameter :: rkf_array_width = 4 ! AVX2 (Ivy Bridge) has 256 bit-wide SIMD width = 4 doubles
+    integer, parameter :: rkf_array_width = 4
 
     ! The actual width of the array (analogous to # of cells to sweep
     ! through in Nyx).
