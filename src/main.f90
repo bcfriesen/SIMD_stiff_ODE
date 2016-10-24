@@ -20,7 +20,7 @@ program main
     ! array widths. Larger array widths may also incur memory access
     ! penalties due to spilling out of cache. So the sweet spot may be
     ! somewhere in the middle.
-    integer, parameter :: rkf_array_width = 4
+    integer :: rkf_array_width
 
     ! Initial and final values of the variable in the ODE. In contrast
     ! to most other integrators, I decided not to make this this one
@@ -60,7 +60,6 @@ program main
     integer :: i
 
     write (*,'(a20, i8)') 'Array length: ', array_length
-    write (*,'(a40, i8)') 'Array width per call to RKF45: ', rkf_array_width
 
     ! Set initial conditions. Just use the value of the loop index as the
     ! initial condition.
@@ -92,13 +91,19 @@ program main
     call cpu_time(t2)
     write (*, *) 'time in scalar RKF45 (sec): ', t2-t1
 
-    ! Now do the same sweep of integrations using the SIMD RKF45.
-    call cpu_time(t1)
-    do i = 1, array_length, rkf_array_width
-      call rkf45(y0(i:i+rkf_array_width-1), t0, tf, dt0, eps, t, dt, y(i:i+rkf_array_width-1), flag, num_steps)
+    ! Now do the same sweep of integrations using the SIMD RKF45, but
+    ! repeat with varying array widths given to RKF.
+    rkf_array_width = 2
+    do while (rkf_array_width <= array_length)
+      write (*,'(a40, i8)') 'Array width per call to RKF45: ', rkf_array_width
+      call cpu_time(t1)
+      do i = 1, array_length, rkf_array_width
+        call rkf45(y0(i:i+rkf_array_width-1), t0, tf, dt0, eps, t, dt, y(i:i+rkf_array_width-1), flag, num_steps)
+      end do
+      call cpu_time(t2)
+      write (*, *) 'time in SIMD RKF45 (sec): ', t2-t1
+      rkf_array_width = rkf_array_width*2
     end do
-    call cpu_time(t2)
-    write (*, *) 'time in SIMD RKF45 (sec): ', t2-t1
 
     if (flag == 0) then
       write (*, *) 'Success!'
