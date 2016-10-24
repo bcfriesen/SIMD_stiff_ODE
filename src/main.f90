@@ -6,7 +6,7 @@ program main
 
     integer, parameter :: dp = selected_real_kind(15)
 
-    integer, parameter :: dp_simd_width = 4 ! AVX2 (Ivy Bridge) has 256 bit-wide SIMD width = 4 doubles
+    integer, parameter :: rkf_array_width = 4 ! AVX2 (Ivy Bridge) has 256 bit-wide SIMD width = 4 doubles
     integer, parameter :: array_length = 2**18
     real(kind=dp) :: y0(array_length), t0, tf, dt0, eps
     real(kind=dp) :: t, dt, y(array_length)
@@ -16,7 +16,7 @@ program main
     integer :: i
 
     write (*,'(a20, i8)') 'Array length: ', array_length
-    write (*,'(a40, i8)') 'Array width per call to RKF45: ', dp_simd_width
+    write (*,'(a40, i8)') 'Array width per call to RKF45: ', rkf_array_width
 
     ! Set initial conditions. Just use the value of the loop index as the
     ! initial condition.
@@ -50,8 +50,8 @@ program main
 
     ! Now do the same sweep of integrations using the SIMD RKF45.
     call cpu_time(t1)
-    do i = 1, array_length, dp_simd_width
-      call rkf45(y0(i:i+dp_simd_width-1), t0, tf, dt0, eps, t, dt, y(i:i+dp_simd_width-1), flag, num_steps)
+    do i = 1, array_length, rkf_array_width
+      call rkf45(y0(i:i+rkf_array_width-1), t0, tf, dt0, eps, t, dt, y(i:i+rkf_array_width-1), flag, num_steps)
     end do
     call cpu_time(t2)
     write (*, *) 'time in SIMD RKF45 (sec): ', t2-t1
