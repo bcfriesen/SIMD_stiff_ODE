@@ -6,6 +6,10 @@ program main
 
     integer, parameter :: dp = selected_real_kind(15)
 
+    ! The actual width of the array (analogous to # of cells to sweep
+    ! through in Nyx).
+    integer, parameter :: array_length = 2**18
+
     ! The width of the array to pass to the SIMD integrator. The
     ! integrator supports arrays of arbitrary width, but there is likely
     ! a sweet spot for the best with to give it. The minimum should be
@@ -17,10 +21,6 @@ program main
     ! penalties due to spilling out of cache. So the sweet spot may be
     ! somewhere in the middle.
     integer, parameter :: rkf_array_width = 4
-
-    ! The actual width of the array (analogous to # of cells to sweep
-    ! through in Nyx).
-    integer, parameter :: array_length = 2**18
 
     ! Initial and final values of the variable in the ODE. In contrast
     ! to most other integrators, I decided not to make this this one
