@@ -6,13 +6,57 @@ program main
 
     integer, parameter :: dp = selected_real_kind(15)
 
+    ! The width of the array to pass to the SIMD integrator. The
+    ! integrator supports arrays of arbitrary width, but there is likely
+    ! a sweet spot for the best with to give it. The minimum should be
+    ! the SIMD width of the architecture (for HSW it's 256 bits -> 4
+    ! doubles; for Knights it's 512 bits -> 8 doubles). Choosing a
+    ! smaller number means the temporary arrays use less memory, but the
+    ! code makes more function calls. The converse is true for larger
+    ! array widths. Larger array widths may also incur memory access
+    ! penalties due to spilling out of cache. So the sweet spot may be
+    ! somewhere in the middle.
     integer, parameter :: rkf_array_width = 4 ! AVX2 (Ivy Bridge) has 256 bit-wide SIMD width = 4 doubles
+
+    ! The actual width of the array (analogous to # of cells to sweep
+    ! through in Nyx).
     integer, parameter :: array_length = 2**18
-    real(kind=dp) :: y0(array_length), t0, tf, dt0, eps
-    real(kind=dp) :: t, dt, y(array_length)
+
+    ! Initial and final values of the variable in the ODE. In contrast
+    ! to most other integrators, I decided not to make this this one
+    ! update the values in situ.
+    real(kind=dp) :: y0(array_length), y(array_length)
+
+    ! Initial and final times for the integration. In a Strang splitting
+    ! grid sweep in Nyx, all cells have the same initial and final time,
+    ! so these are scalars, not arrays.
+    real(kind=dp) :: t0, tf
+
+    ! Initial guess for the time step in the integration. In theory we
+    ! could have a unique guess for each cell, but that would be an
+    ! awful lot of work. So just make all cells use the same initial
+    ! guess.
+    real(kind=dp) :: dt0
+
+    ! Tolerance for the local truncation error, which decides how small
+    ! the time steps can be when integrating from t0 to tf.
+    real(kind=dp) :: eps
+
+    ! Final value of the time and last time step. t should be just tf,
+    ! so there is no good reason to keep it, and it can probably go
+    ! away. dt just shows the value of the last time step when arriving
+    ! at tf.
+    real(kind=dp) :: t, dt
+
+    ! Used for wall clock timers.
     real(kind=dp) :: t1, t2
+
+    ! Number of steps the integration took to get from t0 to tf.
     integer :: num_steps
+
+    ! 0 means integration succeeded; != 0 means it failed.
     integer :: flag
+
     integer :: i
 
     write (*,'(a20, i8)') 'Array length: ', array_length
