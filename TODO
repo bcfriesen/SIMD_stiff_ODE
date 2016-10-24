@@ -1,0 +1,9 @@
+- Figure out if it's cheaper to reset the dt initial guess every step between
+  t0 and tf. Currently the algorithm recycles the dt chosen from the previous
+  time step, so dt will only get smaller as the algorithm marches from t0 to tf
+  (or it may stay the same after the first step, assuming the tolerance is
+  satisfied on every subsequent step). If the chosen dt from the first step is
+  much smaller than it needs to be for the subsequent steps, then we waste a
+  lot of flops by taking unnecessary tiny steps. On the other hand, by
+  resetting dt to dt0 between every step, we are guaranteed to do some extra
+  flops.
