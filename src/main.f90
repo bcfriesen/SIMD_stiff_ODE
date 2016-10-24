@@ -90,6 +90,7 @@ program main
     end do
     call cpu_time(t2)
     write (*, *) 'time in scalar RKF45 (sec): ', t2-t1
+    write (*, *)
 
     ! Now do the same sweep of integrations using the SIMD RKF45, but
     ! repeat with varying array widths given to RKF.
