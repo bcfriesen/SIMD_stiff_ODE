@@ -4,7 +4,7 @@ program main
     use rkf45_scalar_mod
     implicit none
 
-    integer, parameter :: dp = kind(1.0d0)
+    integer, parameter :: dp = selected_real_kind(15)
 
     integer, parameter :: dp_simd_width = 4 ! AVX2 (Ivy Bridge) has 256 bit-wide SIMD width = 4 doubles
     integer, parameter :: array_length = 2**18
