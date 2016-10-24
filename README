@@ -6,6 +6,7 @@ of ODEs.
 The code requires CMake (version >= 2.8.11) to build. To build the code, create
 a new directory somewhere, and type
 
-FC=your_favorite_fortran_compiler cmake /path/to/new/directory
+cd /path/to/new/directory
+FC=your_favorite_fortran_compiler cmake /path/to/SIMD_stiff_ODE
 
 The executable will be called "main" and lives in /path/to/new/directory/src/
