@@ -2,3 +2,10 @@ This is a toy code which tests the effectiveness of vector instructions on a
 Runge-Kutta-Fehlberg (RKF45) explicit adaptive integrator. It integrates
 independent ODEs in different SIMD lanes. It does NOT integrate coupled systems
 of ODEs.
+
+The code requires CMake (version >= 2.8.11) to build. To build the code, create
+a new directory somewhere, and type
+
+FC=your_favorite_fortran_compiler cmake /path/to/new/directory
+
+The executable will be called "main" and lives in /path/to/new/directory/src/
