@@ -8,7 +8,7 @@ program main
 
     ! The actual width of the array (analogous to # of cells to sweep
     ! through in Nyx).
-    integer, parameter :: array_length = 2**18
+    integer, parameter :: array_length = 2**19
 
     ! The width of the array to pass to the SIMD integrator. The
     ! integrator supports arrays of arbitrary width, but there is likely
