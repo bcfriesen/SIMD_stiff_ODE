@@ -1,6 +1,6 @@
 program main
 
-    use rkf45_mod
+    use rkf45_simd_mod
     use rkf45_scalar_mod
     implicit none
 
@@ -99,7 +99,7 @@ program main
       write (*,'(a40, i8)') 'Array width per call to RKF45: ', rkf_array_width
       call cpu_time(t1)
       do i = 1, array_length, rkf_array_width
-        call rkf45(y0(i:i+rkf_array_width-1), t0, tf, dt0, eps, t, dt, y(i:i+rkf_array_width-1), flag, num_steps)
+        call rkf45_simd(y0(i:i+rkf_array_width-1), t0, tf, dt0, eps, t, dt, y(i:i+rkf_array_width-1), flag, num_steps)
       end do
       call cpu_time(t2)
       write (*, *) 'time in SIMD RKF45 (sec): ', t2-t1

@@ -1,4 +1,4 @@
-module rhs_mod
+module rhs_simd_mod
 
   implicit none
 
@@ -6,13 +6,13 @@ module rhs_mod
 
   contains
 
-  subroutine rhs (t, y, f)
+  subroutine rhs_simd (t, y, f)
       implicit none
 
       real(kind=dp), intent(in) :: t, y(:)
       real(kind=dp), intent(out) :: f(:)
 
       f = 2.0d0*t
-  end subroutine rhs
+  end subroutine rhs_simd
 
-end module rhs_mod
+end module rhs_simd_mod

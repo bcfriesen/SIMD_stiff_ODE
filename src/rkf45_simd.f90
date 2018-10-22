@@ -1,10 +1,10 @@
-module rkf45_mod
+module rkf45_simd_mod
   implicit none
 
   contains
-    subroutine rkf45 (y0, t0, tf, dt0, eps, t, dt, y, flag, num_steps)
+    subroutine rkf45_simd (y0, t0, tf, dt0, eps, t, dt, y, flag, num_steps)
 
-        use rhs_mod
+        use rhs_simd_mod
         implicit none
 
         integer, parameter :: dp = selected_real_kind(15)
@@ -44,36 +44,36 @@ module rkf45_mod
 
             ! A bunch of coefficients, taken from Hairer, Norsett, and Wanner (1993).
 
-            call rhs(t, y, f)
+            call rhs_simd(t, y, f)
             k1 = dt * f
 
-            call rhs(t + 1.0d0/4.0d0*dt, y + 1.0d0/4.0d0*k1, f)
+            call rhs_simd(t + 1.0d0/4.0d0*dt, y + 1.0d0/4.0d0*k1, f)
             k2 = dt * f
 
-            call rhs(t + 3.0d0/8.0d0*dt, y + 3.0d0/32.0d0*k1 &
-                                           + 9.0d0/32.0d0*k2, &
+            call rhs_simd(t + 3.0d0/8.0d0*dt, y + 3.0d0/32.0d0*k1 &
+                                                + 9.0d0/32.0d0*k2, &
                      f)
             k3 = dt * f
 
-            call rhs(t + 12.0d0/13.0d0*dt, y + 1932.0d0/2197.0d0*k1 &
-                                             - 7200.0d0/2197.0d0*k2 &
-                                             + 7296.0d0/2197.0d0*k3, &
-                     f)
+            call rhs_simd(t + 12.0d0/13.0d0*dt, y + 1932.0d0/2197.0d0*k1 &
+                                                  - 7200.0d0/2197.0d0*k2 &
+                                                  + 7296.0d0/2197.0d0*k3, &
+                          f)
             k4 = dt * f
 
-            call rhs(t + dt, y + 439.0d0/216.0d0*k1 &
-                               - 8.0d0*k2 &
-                               + 3680.0d0/513.0d0*k3 &
-                               - 845.0d0/4104.0d0*k4, &
-                     f)
+            call rhs_simd(t + dt, y + 439.0d0/216.0d0*k1 &
+                                    - 8.0d0*k2 &
+                                    + 3680.0d0/513.0d0*k3 &
+                                    - 845.0d0/4104.0d0*k4, &
+                          f)
             k5 = dt * f
 
-            call rhs(t + 1.0d0/2.0d0*dt, y - 8.0d0/27.0d0*k1 &
-                                           + 2.0d0*k2 &
-                                           - 3544.0d0/2565.0d0*k3 &
-                                           + 1859.0d0/4104.0d0*k4 &
-                                           - 11.0d0/40.0d0*k5, &
-                     f)
+            call rhs_simd(t + 1.0d0/2.0d0*dt, y - 8.0d0/27.0d0*k1 &
+                                                + 2.0d0*k2 &
+                                                - 3544.0d0/2565.0d0*k3 &
+                                                + 1859.0d0/4104.0d0*k4 &
+                                                - 11.0d0/40.0d0*k5, &
+                          f)
             k6 = dt * f
 
             ! 4th-order approximation to y(t+dt)
@@ -120,6 +120,6 @@ module rkf45_mod
 
         end do
 
-    end subroutine rkf45
+    end subroutine rkf45_simd
 
-end module rkf45_mod
+end module rkf45_simd_mod
