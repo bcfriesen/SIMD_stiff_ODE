@@ -2,7 +2,7 @@ module rkf45_simd_mod
   implicit none
 
   contains
-    subroutine rkf45_simd (y0, t0, tf, dt0, eps, t, dt, y, flag, num_steps)
+    pure subroutine rkf45_simd (y0, t0, tf, dt0, eps, t, dt, y, flag, num_steps)
 
         use rhs_simd_mod
         implicit none

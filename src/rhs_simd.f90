@@ -6,7 +6,7 @@ module rhs_simd_mod
 
   contains
 
-  subroutine rhs_simd (t, y, f)
+  pure subroutine rhs_simd (t, y, f)
       implicit none
 
       real(kind=dp), intent(in) :: t, y(:)

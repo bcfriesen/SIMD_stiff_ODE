@@ -2,7 +2,7 @@ module rkf45_scalar_mod
   implicit none
 
   contains
-    subroutine rkf45_scalar (y0, t0, tf, dt0, eps, t, dt, y, flag, num_steps)
+    elemental subroutine rkf45_scalar (y0, t0, tf, dt0, eps, t, dt, y, flag, num_steps)
 
         use rhs_scalar_mod
         implicit none

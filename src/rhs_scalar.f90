@@ -6,7 +6,7 @@ module rhs_scalar_mod
 
   contains
 
-  subroutine rhs_scalar (t, y, f)
+  elemental subroutine rhs_scalar (t, y, f)
       implicit none
 
       real(kind=dp), intent(in) :: t, y
