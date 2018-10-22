@@ -3,7 +3,6 @@ project (SIMD_stiff_ODE)
 
 enable_language(Fortran)
 
-set (CMAKE_Fortran_FLAGS "-O2")
 set (CMAKE_VERBOSE_MAKEFILE "TRUE")
 
 add_subdirectory (src)
