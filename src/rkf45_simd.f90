@@ -5,27 +5,26 @@ module rkf45_simd_mod
     pure subroutine rkf45_simd (y0, t0, tf, dt0, eps, t, dt, y, flag, num_steps)
 
         use rhs_simd_mod
+        use iso_fortran_env, only: real64
         implicit none
 
-        integer, parameter :: dp = selected_real_kind(15)
-
-        real(kind=dp), intent(in) :: y0(:), t0, tf, dt0, eps
-        real(kind=dp), intent(out) :: t, dt, y(:)
+        real(real64), intent(in) :: y0(:), t0, tf, dt0, eps
+        real(real64), intent(out) :: t, dt, y(:)
         integer, intent(out) :: flag, num_steps
 
-        real(kind=dp) :: k1(size(y0))
-        real(kind=dp) :: k2(size(y0))
-        real(kind=dp) :: k3(size(y0))
-        real(kind=dp) :: k4(size(y0))
-        real(kind=dp) :: k5(size(y0))
-        real(kind=dp) :: k6(size(y0))
+        real(real64) :: k1(size(y0))
+        real(real64) :: k2(size(y0))
+        real(real64) :: k3(size(y0))
+        real(real64) :: k4(size(y0))
+        real(real64) :: k5(size(y0))
+        real(real64) :: k6(size(y0))
 
-        real(kind=dp) :: y_rk4_approx(size(y0))
-        real(kind=dp) :: y_rk5_approx(size(y0))
-        real(kind=dp) :: s
-        real(kind=dp) :: lte(size(y0))
-        real(kind=dp) :: maxlte
-        real(kind=dp) :: f(size(y0))
+        real(real64) :: y_rk4_approx(size(y0))
+        real(real64) :: y_rk5_approx(size(y0))
+        real(real64) :: s
+        real(real64) :: lte(size(y0))
+        real(real64) :: maxlte
+        real(real64) :: f(size(y0))
 
         integer, parameter :: maxiter = 10
         integer :: i

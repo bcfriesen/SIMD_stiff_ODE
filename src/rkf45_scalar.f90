@@ -5,26 +5,25 @@ module rkf45_scalar_mod
     elemental subroutine rkf45_scalar (y0, t0, tf, dt0, eps, t, dt, y, flag, num_steps)
 
         use rhs_scalar_mod
+        use iso_fortran_env, only: real64
         implicit none
 
-        integer, parameter :: dp = selected_real_kind(15)
-
-        real(kind=dp), intent(in) :: y0, t0, tf, dt0, eps
-        real(kind=dp), intent(out) :: t, dt, y
+        real(real64), intent(in) :: y0, t0, tf, dt0, eps
+        real(real64), intent(out) :: t, dt, y
         integer, intent(out) :: flag, num_steps
 
-        real(kind=dp) :: k1
-        real(kind=dp) :: k2
-        real(kind=dp) :: k3
-        real(kind=dp) :: k4
-        real(kind=dp) :: k5
-        real(kind=dp) :: k6
+        real(real64) :: k1
+        real(real64) :: k2
+        real(real64) :: k3
+        real(real64) :: k4
+        real(real64) :: k5
+        real(real64) :: k6
 
-        real(kind=dp) :: y_rk4_approx
-        real(kind=dp) :: y_rk5_approx
-        real(kind=dp) :: s
-        real(kind=dp) :: lte
-        real(kind=dp) :: f
+        real(real64) :: y_rk4_approx
+        real(real64) :: y_rk5_approx
+        real(real64) :: s
+        real(real64) :: lte
+        real(real64) :: f
 
         integer, parameter :: maxiter = 10
         integer :: i
