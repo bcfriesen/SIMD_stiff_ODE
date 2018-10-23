@@ -4,6 +4,7 @@ module rkf45_scalar_mod
   contains
     elemental subroutine rkf45_scalar (y0, t0, tf, dt0, eps, t, dt, y, flag, num_steps)
 
+        !$omp declare simd
         use rhs_scalar_mod
         use iso_fortran_env, only: real64
         implicit none

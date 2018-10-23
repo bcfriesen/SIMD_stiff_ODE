@@ -85,6 +85,7 @@ program main
 
     ! First do the integrations using the scalar version of RKF45.
     call cpu_time(t1)
+    !$omp simd
     do i = 1, array_length
       call rkf45_scalar(y0(i), t0, tf, dt0, eps, t, dt, y(i), flag, num_steps)
       err = err + flag
