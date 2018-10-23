@@ -2,6 +2,7 @@ program main
 
     use rkf45_simd_mod
     use rkf45_scalar_mod
+    use check_result_mod
     use iso_fortran_env, only: real64
     implicit none
 
@@ -92,6 +93,8 @@ program main
     write (*, *) 'time in scalar RKF45 (sec): ', t2-t1
     write (*, *)
 
+    call check_result(y)
+
     ! Now do the same sweep of integrations using the SIMD RKF45, but
     ! repeat with varying array widths given to RKF.
     rkf_array_width = 2
@@ -108,6 +111,8 @@ program main
     end do
 
     if (err < 0) error stop 'ERROR: Integration failed!'
+
+    call check_result(y)
 
     write (*, *) 'Success!'
     write (*, '(a50, 2i8)') '# of time steps taken: ', num_steps
