@@ -54,8 +54,8 @@ program main
     ! Number of steps the integration took to get from t0 to tf.
     integer :: num_steps
 
-    ! 0 means integration succeeded; != 0 means it failed.
-    integer :: flag
+    ! 0 means integration succeeded; < 0 means it failed.
+    integer :: flag, err = 0
 
     integer :: i
 
@@ -87,6 +87,7 @@ program main
     call cpu_time(t1)
     do i = 1, array_length
       call rkf45_scalar(y0(i), t0, tf, dt0, eps, t, dt, y(i), flag, num_steps)
+      err = err + flag
     end do
     call cpu_time(t2)
     write (*, *) 'time in scalar RKF45 (sec): ', t2-t1
@@ -100,17 +101,16 @@ program main
       call cpu_time(t1)
       do i = 1, array_length, rkf_array_width
         call rkf45_simd(y0(i:i+rkf_array_width-1), t0, tf, dt0, eps, t, dt, y(i:i+rkf_array_width-1), flag, num_steps)
+        err = err + flag
       end do
       call cpu_time(t2)
       write (*, *) 'time in SIMD RKF45 (sec): ', t2-t1
       rkf_array_width = rkf_array_width*2
     end do
 
-    if (flag == 0) then
-      write (*, *) 'Success!'
-      write (*, '(a25, i8)') '# of time steps taken: ', num_steps
-    else
-      write (*, *) 'ERROR: Integration failed!'
-    end if
+    if (err < 0) error stop 'ERROR: Integration failed!'
+
+    write (*, *) 'Success!'
+    write (*, '(a50, 2i8)') '# of time steps taken: ', num_steps
 
 end program main
